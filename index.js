@@ -10,8 +10,8 @@ const cors = require('cors')
 //import router
 const router = require('./router')
 
-//import connection
-// require('./connection')
+// import connection
+require('./connection')
 
 // create server
 const pfServer = express()
