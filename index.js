@@ -36,9 +36,9 @@ pfServer.listen(PORT,()=>{
 }) 
 
 // Get
-// pfServer.get('/',(req, res)=>{
-//     res.send(`get request received`)
-// })
+pfServer.get('/',(req, res)=>{
+    res.send(`get request received`)
+})
 
 // Send
 // pfServer.post('/',(req, res)=>{

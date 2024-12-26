@@ -1,4 +1,5 @@
 // register
+const users = require('../model/userModel')
 
 exports.register = async (req, res)=>{
     //logic
@@ -7,17 +8,17 @@ exports.register = async (req, res)=>{
     console.log(username, email, password); 
 
     try {
-        const existingUsers = await useres.findOne({email})
-        if(existingUsers){
+        const existingUser = await users.findOne({email})
+        if(existingUser){
             res.status(406).json("User Already Exists")
         }else{
             const newUser = new users({
-                username:username,
+                username,
                 email,
                 password,
-                profile,
-                github,
-                linkedin
+                profile:"",
+                github:"",
+                linkedin:""
             })
             await newUser.save()
             res.status(200).json(newUser)

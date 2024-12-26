@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 connectionstring = process.env.DATABASE
 
-mongoose.connect(connectionstring).then((res)=>{
+mongoose.connect(connectionstring).then(()=>{
     console.log(`mongodb connected successfully`);
     
 }).catch((err)=>{
