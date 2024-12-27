@@ -11,5 +11,7 @@ const router = new express.Router()
 router.post('/register',userController.register)
 
 //LOGIN
+router.post('/login',userController.login)
+
 
 module.exports = router

@@ -1,29 +1,32 @@
-// register
 const users = require('../model/userModel')
 
-exports.register = async (req, res)=>{
+const jwt = require('jsonwebtoken')
+
+
+// register
+exports.register = async (req, res) => {
     //logic
     console.log(`inside register function`);
-    const {username, email, password} = req.body
-    console.log(username, email, password); 
+    const { username, email, password } = req.body
+    console.log(username, email, password);
 
     try {
-        const existingUser = await users.findOne({email})
-        if(existingUser){
+        const existingUser = await users.findOne({ email })
+        if (existingUser) {
             res.status(406).json("User Already Exists")
-        }else{
+        } else {
             const newUser = new users({
                 username,
                 email,
                 password,
-                profile:"",
-                github:"",
-                linkedin:""
+                profile: "",
+                github: "",
+                linkedin: ""
             })
             await newUser.save()
             res.status(200).json(newUser)
         }
-        
+
     } catch (error) {
         res.status(401).json(error)
     }
@@ -31,3 +34,19 @@ exports.register = async (req, res)=>{
 }
 
 // login
+exports.login = async (req, res) => {
+    const { email, password } = req.body
+    console.log(email, password);
+    try {
+        const existingUser = await users.findOne({ email, password })
+        if (existingUser) {
+            const token = jwt.sign({userId:existingUser._id},"secretkey")
+            res.status(200).json({existingUser, token})
+        } else {
+            res.status(406).json(`Incorrect Email or Password`)
+            
+        }
+    } catch (error) {
+        res.status(401).json(error)
+    }
+}
