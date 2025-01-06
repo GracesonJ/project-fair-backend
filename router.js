@@ -22,7 +22,7 @@ router.post('/register',userController.register)
 router.post('/login',userController.login)
 
 //add-project
-router.post('/add-project', jwtMiddleware,multerConfig.single("projectImage"), projectController.addProjectController)
+router.post('/add-project', jwtMiddleware, multerConfig.single("projectImage"), projectController.addProjectController)
 
  
 module.exports = router
