@@ -24,5 +24,14 @@ router.post('/login',userController.login)
 //add-project
 router.post('/add-project', jwtMiddleware, multerConfig.single("projectImage"), projectController.addProjectController)
 
+//get all project
+router.get('/all-project',jwtMiddleware, projectController.getAllProjectController)
+
+// get home projects
+router.get('/home-projects', projectController.getHomeProjectController)
+
+//get user Project
+router.get('/user-project', jwtMiddleware, projectController.getUserProjectController)
+
  
 module.exports = router

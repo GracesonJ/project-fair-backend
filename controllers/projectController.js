@@ -28,3 +28,35 @@ exports.addProjectController = async (req, res) => {
         res.status(401).json(`Project adding failed due to`, error)
     }
 }
+
+// Get all Project
+exports.getAllProjectController = async (req, res)=>{
+    try {
+        const allProject = await projects.find()
+        res.status(200).json(allProject)
+    } catch (error) {
+        res.status(401).json(error)
+    }
+}
+
+// Get home Project
+exports.getHomeProjectController = async (req, res)=>{
+    try {
+        const allProject = await projects.find().limit(3)
+        res.status(200).json(allProject)
+    } catch (error) {
+        res.status(401).json(error)
+    }
+}
+
+// Get user Project
+exports.getUserProjectController = async (req, res)=>{
+    const userId = req.payload
+    try {
+
+        const allProject = await projects.find({userId})
+        res.status(200).json(allProject)
+    } catch (error) {
+        res.status(401).json(error)
+    }
+}
