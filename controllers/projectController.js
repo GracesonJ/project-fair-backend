@@ -30,17 +30,17 @@ exports.addProjectController = async (req, res) => {
 }
 
 // Get all Project
-exports.getAllProjectController = async (req, res)=>{
+exports.getAllProjectController = async (req, res) => {
     // path parameter = req.params
     // query parameter = req.query
-    const searchKey  = req.query.search
+    const searchKey = req.query.search
     console.log(searchKey);
     const query = {
-        language:{
-            $regex:searchKey, $options:"i"
+        language: {
+            $regex: searchKey, $options: "i"
         }
     }
-    
+
     try {
         const allProject = await projects.find(query)
         res.status(200).json(allProject)
@@ -50,7 +50,7 @@ exports.getAllProjectController = async (req, res)=>{
 }
 
 // Get home Project
-exports.getHomeProjectController = async (req, res)=>{
+exports.getHomeProjectController = async (req, res) => {
     try {
         const allProject = await projects.find().limit(3)
         res.status(200).json(allProject)
@@ -60,11 +60,11 @@ exports.getHomeProjectController = async (req, res)=>{
 }
 
 // Get user Project
-exports.getUserProjectController = async (req, res)=>{
+exports.getUserProjectController = async (req, res) => {
     const userId = req.payload
     try {
 
-        const allProject = await projects.find({userId})
+        const allProject = await projects.find({ userId })
         res.status(200).json(allProject)
     } catch (error) {
         res.status(401).json(error)
@@ -72,11 +72,39 @@ exports.getUserProjectController = async (req, res)=>{
 }
 
 // remove user project
-exports.removeUserProjectController = async(req, res)=>{
-    const {id} = req.params
+exports.removeUserProjectController = async (req, res) => {
+    const { id } = req.params
     try {
-        await projects.findByIdAndDelete({_id:id})
+        await projects.findByIdAndDelete({ _id: id })
         res.status(200).json(`Deleted Successfully`)
+    } catch (error) {
+        res.status(401).json(error)
+    }
+}
+
+//update user project
+exports.editProjectController = async (req, res) => {
+    const { id } = req.params
+    const userId = req.payload
+
+    const { title, language, github, website, overview, projectImage } = req.body
+
+    uploadedImage = req.file ? req.file.filename : projectImage
+
+    try {
+        const existingProject = await projects.findByIdAndUpdate({ _id: id }, {
+            title,
+            language,
+            github,
+            website,
+            overview,
+            projectImage: uploadedImage,
+            userId
+        }, { new: true })
+
+        await existingProject.save()
+        res.status(200).json(existingProject)
+
     } catch (error) {
         res.status(401).json(error)
     }
